@@ -18,8 +18,37 @@
             Megoldás forrása:<link xlink:href="https://github.com/HRikuto/prog1/tree/master/1.%20r%C3%A9sz/1.%20V%C3%A9gtelen%20ciklus">Github 2.1 megoldása</link>
         </para>
         <para>
-            Tanulságok, tapasztalatok, magyarázat...
-        </para>            
+            Tanulságok, tapasztalatok, magyarázat:
+            A feladat első része egész egyszerűen megoldható. Egy olyan program ami 0 százalékban használ 
+            egy magot gyakorlatilag egy olyan program ami nem csinál semmit. Mivel nem szabad hogy véget érjen, 
+            így egy végtelen cikluson belül kell megoldani a semmittevést a következő pontosan ezt is éri el:
+        </para>
+        <programlisting language="c"><![CDATA[Program 0
+	while (a==1){
+
+		sleep(1);};
+]]></programlisting> 
+        <para>
+            100 száazélkban leterhelni egy magot a következőképp lehet. Egy végtelen számolási ciklusba
+            kell kényszeríteni kivezető út nélkül. Például a következőképp: 
+        </para> 
+        <programlisting language="c"><![CDATA[Program 100
+	while (a==1){
+		b+1;
+};
+]]></programlisting>       
+        <para>
+         
+         (Az optimalizálás alapjai) Az összes magot 100 százalékban leterhelni innen már nem nehéz. Ha egyre már 
+         meg van, csak annyi a teendő hogy az összes többire magra is rábízok egy végtelen számolást, akár ugyanazt. 
+            
+        </para>
+        
+        <programlisting language="c"><![CDATA[Program x*100
+	#pragma omp parallel
+         while (a==1){
+            b+1;};
+]]></programlisting>   
     </section>        
         
     <section>
@@ -61,7 +90,7 @@ false]]></screen>
         </para>
         <para>
             A T100-as programot felhasználva készítsük most el az alábbi T1000-set, amelyben a
-            Lefagy-ra épőlő Lefagy2 már nem tartalmaz feltételezett, csak csak konkrét kódot:
+            Lefagy-ra épőlő Lefagy2 már nem tartalmaz feltételezett, csak konkrét kódot:
         </para>
         <programlisting language="c"><![CDATA[Program T1000
 {
@@ -104,7 +133,10 @@ false]]></screen>
             függvényt, azaz a T100 program nem is létezik.                
         </para>
         <para>
-            Tanulságok, tapasztalatok, magyarázat...
+            Tanulságok, tapasztalatok, magyarázat: 
+            A feladat egy olyan program írása volt amely bármely más programról eldönti hogy lefagy-e vagy sem. 
+            Ez elméletben ellentmondásokhoz vezet. Ha eltávolítjuk az ellentmondásokat, akkor elméletben lehetséges 
+            olyan programot írni amely saját megán kívül több más programról eldönti, hogy lefagyó-e. 
         </para>
     </section>        
                 
@@ -121,7 +153,12 @@ false]]></screen>
             Megoldás forrása:  <link xlink:href="https://github.com/HRikuto/prog1/tree/master/1.%20r%C3%A9sz/3.%20V%C3%A1ltoz%C3%B3k%20%C3%A9rt%C3%A9k%C3%A9nek%20felcser%C3%A9l%C3%A9se">Github 2.3 megoldása</link>
         </para>
         <para>
-            Tanulságok, tapasztalatok, magyarázat...
+            Tanulságok, tapasztalatok, magyarázat:
+            Ehhez fontos tudni hogy a számítógép hogyan is működik. Ezek után egyszerű a problémát megoldani.
+            Gyors és egyszerű magyarázata: Van egy változóm, aminek értéke legyen most 16. A változó legyen "a". a=16. 
+            Ha adok egy olyan utasítást hogy a=a+a, akkor azt mit jelentene a számítógépnek? 16=16+16!? De ez lehetetlen!!
+            A számítógép ezt úgy értelmezi, hogy az "a" (új) értékét úgy kapja meg hogy összeadja "a"-t és "a"-t. Azaz ??=16+16.
+            A memóriában mindig a legutolsó (változatlan) változóérték lesz elérhető.
         </para>
     </section>                     
 
@@ -139,8 +176,15 @@ false]]></screen>
             Megoldás forrása: <link xlink:href="https://github.com/HRikuto/prog1/tree/master/1.%20r%C3%A9sz/4%20Labdapattogtat%C3%A1s">Github 2.4 megoldása</link>  
         </para>
         <para>
-            Tanulságok, tapasztalatok, magyarázat...
+            Tanulságok, tapasztalatok, magyarázat: 
+            Ez egy kicsit trükkös feladat. Először arra gondoltam hogy a kurzot mégis hogyan tudom pattogtatni. 
+            Pedig ahogy a valóságban is, itt is fontosabb a "Hol fogom pattogtatni?" csak ez után jön a "Mit fogok pattogtatni?"
+            (Hiába van labdám ha nincs hol játszani vele.) Olyan válotozókra/értékekre van szükségem ami eldönti hogy a
+            konzolon belül mettől meddig mehet a "labdám". 
         </para>
+        <programlisting language="c"><![CDATA[Labdapattogtatás
+	Folytatás következik...
+]]></programlisting>  
     </section>                     
 
     <section>
