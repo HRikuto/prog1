@@ -14,11 +14,25 @@
             Megoldás videó:
         </para>
         <para>
-            Megoldás forrása:                
+            Megoldás forrása: <link xlink:href="https://github.com/HRikuto/prog1/blob/master/3.%20r%C3%A9sz/dtu.cpp">3.1 megoldás</link>               
         </para>
         <para>
-            Tanulságok, tapasztalatok, magyarázat...
+            Tanulságok, tapasztalatok, magyarázat: A feladat az általunk használt 10-es számrendszerből az 1-es számrendszerbe átváltás.
+            A program feladata csak annyi, hogy annyi vonalat húz, mint a természetes szám, amit megdunk neki.
         </para>
+        <programlisting><![CDATA[
+#include <iostream>
+int main()
+{
+	int a;
+	std::cin >> a;
+	std::cout << std::string(a, 'I') << "\n";
+	return 0;
+};]]></programlisting>
+<para>
+    Létrehoztam egy a egész típusú változót. Majd a turing gépeket utánozva valamilyen inputot kértem a értékére. 
+    Majd a-szor írtam ki az vonalat. (nem akartma egyest használni mert megtévesztő lehet). 
+</para>
     </section>        
         
     <section>
@@ -66,10 +80,11 @@
             Megoldás videó: 
         </para>
         <para>
-            Megoldás forrása:  
+            Megoldás forrása:  <link xlink:href="https://github.com/HRikuto/prog1/blob/master/3.%20r%C3%A9sz/lex.l">3.4 megoldás</link>
         </para>
         <para>
-            Tanulságok, tapasztalatok, magyarázat...
+            Tanulságok, tapasztalatok, magyarázat:   A minta illesztésen alapulva legenerálja a lexikális elemzőt, csak a mintát kell megadni, ami alapján figyeli a begépelt 
+szöveget. Itt olyan programot írunk, ami a begépelt szövegből felismeri és megszámolja a valós számokat.
         </para>
     </section>                     
 
@@ -98,8 +113,7 @@
     signal(SIGINT, SIG_IGN);]]></programlisting>
             Ha a SIGINT jel kezelése figyelmen kívül volt hagyva, akkor ezen túl is legyen
             figyelmen kívül hagyva, ha nem volt figyelmen kívül hagyva, akkor a jelkezelo függvény
-            kezelje. (Miután a <command>man 7 signal</command> lapon megismertem a SIGINT jelet, a
-            <command>man 2 signal</command> lapon pedig a használt rendszerhívást.)
+            kezelje. 
         </para>
 
         <caution>
@@ -114,33 +128,69 @@
             <listitem>                                    
                 <programlisting><![CDATA[if(signal(SIGINT, SIG_IGN)!=SIG_IGN)
     signal(SIGINT, jelkezelo);]]></programlisting>
+    <para>Ha a SIGINT jel kezelése nem volt figyelmen kívűl hagyva, akkor a jelkezelo függvény kezelje, máskülönben figyelmen kívűl 
+legyen hagyva.</para>
             </listitem>
             <listitem>                                    
-                <programlisting><![CDATA[for(i=0; i<5; ++i)]]></programlisting>            
+                <programlisting><![CDATA[for(i=0; i<5; ++i)]]></programlisting> 
+                <para>
+            i keztdőértéke nulla. i végértéke kevesebb mint öt. Veszi i-t megnöveli +1-el a jelenlegi értékéhez képest. 
+                Effektívebb, i előző értéke nem marad meg.
+                </para>           
+            </listitem>
+            
+            <listitem>                                    
+
+                <programlisting><![CDATA[for(i=0; i<5; i++)]]></programlisting>
+                <para>i kezdőértéke nulla. i végértéke kevesebb mint öt. 
+                Veszi i-t lemásolja i-t megnöveli az eredeti i értéket +1-el, de a régi érték másolata megmarad. 
+                Nem túl effektív ha nincs szükség i előzőjére.
+                </para>            
+            </listitem>
+                
+            <listitem> 
+                                                   
+
+                <programlisting><![CDATA[for(i=0; i<5; tomb[i] = i++)]]></programlisting> 
+                <para>
+                    i kezdőértéke nulla. i végértéke kevesebb mint öt. 
+                    A tömb minden i elemét megváltoztatjuk a jelenlegi i-re, aztán növeljük i-t 1-el.
+                    
+                </para>           
             </listitem>
             <listitem>                                    
 
-                <programlisting><![CDATA[for(i=0; i<5; i++)]]></programlisting>            
+                <programlisting><![CDATA[for(i=0; i<n && (*d++ = *s++); ++i)]]></programlisting>
+                <para>
+                    i kezdőértéke nulla. i végértéke kevesebb mint n és ha d tömbre muntató mutató következő
+eleme egyenlő az s mutató által mutatatott tömb következő elemével.
+                </para>            
             </listitem>
             <listitem>                                    
 
-                <programlisting><![CDATA[for(i=0; i<5; tomb[i] = i++)]]></programlisting>            
+                <programlisting><![CDATA[printf("%d %d", f(a, ++a), f(++a, a));]]></programlisting> 
+                <para>
+                    Kiiratunk két egész számot. Mindkettőt az f függvény adja vissza. 
+                    Első esetben az f függvénynek
+                        átadjuk az a változót és az a változó 1-el megnövelt értékét. Másodszor pedig az a változó 1-el megnövelt értékét és a-t adjuk átadjuk
+az f függvénynek.
+                </para>           
             </listitem>
             <listitem>                                    
 
-                <programlisting><![CDATA[for(i=0; i<n && (*d++ = *s++); ++i)]]></programlisting>            
+                <programlisting><![CDATA[printf("%d %d", f(a), a);]]></programlisting> 
+                <para>
+                    Két egész számot iratunk ki, az egyik az f függvény által visszaadott szám, az a változót átadjuk az f-nek, a másik pedig az a változó.
+                </para>
+                          
             </listitem>
             <listitem>                                    
 
-                <programlisting><![CDATA[printf("%d %d", f(a, ++a), f(++a, a));]]></programlisting>            
-            </listitem>
-            <listitem>                                    
+                <programlisting><![CDATA[printf("%d %d", f(&a), a);]]></programlisting>
+                <para> 
+                    Két egész számot iratunk ki, az egyik az f függvény által visszaadott szám, az a változó memóriacímét átadjuk az f-nek, a másik pedig az a változó.
+                </para>
 
-                <programlisting><![CDATA[printf("%d %d", f(a), a);]]></programlisting>            
-            </listitem>
-            <listitem>                                    
-
-                <programlisting><![CDATA[printf("%d %d", f(&a), a);]]></programlisting>            
             </listitem>
         </orderedlist>
         <para>
@@ -162,15 +212,26 @@
         <para>
             Hogyan olvasod természetes nyelven az alábbi Ar nyelvű formulákat?
         </para>
-        <programlisting language="tex"><![CDATA[$(\forall x \exists y ((x<y)\wedge(y \text{ prím})))$ 
-
-$(\forall x \exists y ((x<y)\wedge(y \text{ prím})\wedge(SSy \text{ prím})))$ 
-
-$(\exists y \forall x (x \text{ prím}) \supset (x<y)) $ 
-
-$(\exists y \forall x (y<x) \supset \neg (x \text{ prím}))$
-]]></programlisting>        
         <para>
+            A jelentésü röviden:
+        </para>
+        <programlisting language="tex"><![CDATA[$(\forall x \exists y ((x<y)\wedge(y \text{ prím})))$ ]]></programlisting>
+        <para>
+           Sok prímszám van. 
+        </para>
+<programlisting language="tex"><![CDATA[$(\forall x \exists y ((x<y)\wedge(y \text{ prím})\wedge(SSy \text{ prím})))$ ]]></programlisting>
+<para>
+    Sok iker-prímszám van.
+</para>
+<programlisting language="tex"><![CDATA[$(\exists y \forall x (x \text{ prím}) \supset (x<y)) $ ]]></programlisting>
+<para>
+    Véges sok prímszám van.
+</para>
+<programlisting language="tex"><![CDATA[$(\exists y \forall x (y<x) \supset \neg (x \text{ prím}))$]]></programlisting>        
+<para>
+    Véges sok prímszám van.
+</para>    
+<para>
             Megoldás forrása: <link xlink:href="https://gitlab.com/nbatfai/bhax/blob/master/attention_raising/MatLog_LaTeX">https://gitlab.com/nbatfai/bhax/blob/master/attention_raising/MatLog_LaTeX</link>
         </para>
 
@@ -192,33 +253,43 @@ $(\exists y \forall x (y<x) \supset \neg (x \text{ prím}))$
 
         <itemizedlist>
             <listitem>
+                <programlisting><![CDATA[int a;]]></programlisting> 
                 <para>egész</para>                        
             </listitem>
             <listitem>
+                 <programlisting><![CDATA[int *b = &a;]]></programlisting>
                 <para>egészre mutató mutató</para>                        
             </listitem>
             <listitem>
+                 <programlisting><![CDATA[int &r = a;]]></programlisting>
                 <para>egész referenciája</para>                        
             </listitem>
-            <listitem>
+            <listitem> 
+                <programlisting><![CDATA[int c[10];]]></programlisting>
                 <para>egészek tömbje</para>                        
             </listitem>
             <listitem>
+                <programlisting><![CDATA[int (&tr)[10] = c;]]></programlisting> 
                 <para>egészek tömbjének referenciája (nem az első elemé)</para>                        
             </listitem>
             <listitem>
+                <programlisting><![CDATA[int *d[5];]]></programlisting> 
                 <para>egészre mutató mutatók tömbje</para>                        
             </listitem>
             <listitem>
+                <programlisting><![CDATA[int *h ();]]></programlisting> 
                 <para>egészre mutató mutatót visszaadó függvény</para>                        
             </listitem>
             <listitem>
+                <programlisting><![CDATA[int *(*l) ();]]></programlisting> 
                 <para>egészre mutató mutatót visszaadó függvényre mutató mutató</para>                        
             </listitem>
             <listitem>
+                <programlisting><![CDATA[int (*v (int c)) (int a, int b)]]></programlisting> 
                 <para>egészet visszaadó és két egészet kapó függvényre mutató mutatót visszaadó, egészet kapó függvény</para>                        
             </listitem>            
             <listitem>
+                <programlisting><![CDATA[int (*(*z) (int)) (int, int);]]></programlisting> 
                 <para>függvénymutató egy egészet visszaadó és két egészet kapó függvényre mutató mutatót visszaadó, egészet kapó függvényre</para>                        
             </listitem>            
         </itemizedlist>            

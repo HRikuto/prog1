@@ -39,8 +39,8 @@
 ]]></programlisting>       
         <para>
          
-         (Az optimalizálás alapjai) Az összes magot 100 százalékban leterhelni innen már nem nehéz. Ha egyre már 
-         meg van, csak annyi a teendő hogy az összes többire magra is rábízok egy végtelen számolást, akár ugyanazt. 
+            (Az optimalizálás alapjai) Az összes magot 100 százalékban leterhelni innen már nem nehéz. Ha egyre már 
+            meg van, csak annyi a teendő hogy az összes többire magra is rábízok egy végtelen számolást, akár ugyanazt. 
             
         </para>
         
@@ -135,8 +135,9 @@ false]]></screen>
         <para>
             Tanulságok, tapasztalatok, magyarázat: 
             A feladat egy olyan program írása volt amely bármely más programról eldönti hogy lefagy-e vagy sem. 
-            Ez elméletben ellentmondásokhoz vezet. Ha eltávolítjuk az ellentmondásokat, akkor elméletben lehetséges 
-            olyan programot írni amely saját megán kívül több más programról eldönti, hogy lefagyó-e. 
+            Ez elméletben ellentmondásokhoz vezet. Ha eltávolítjuk az ellentmondásokat, akkor csak a feladatra nem adunk választ.
+            Azaz, a program mondjuk kapja meg saját magát "bármely program címszó alatt" bementeként. Itt jön ki az ellentmondás és az el nem távolíthatósága. 
+            Ha azt mondja magáról hogy nincs magában végtelen ciklus akkor végtelen ciklusba kerül, ha pedig van benne akkor megfagy. Emiatt nem lehetséges a feladat megoldása.
         </para>
     </section>        
                 
@@ -194,13 +195,26 @@ false]]></screen>
             Használd ugyanazt a while ciklus fejet, amit Linus Torvalds a BogoMIPS rutinjában! 
         </para>
         <para>
-            Megoldás videó: <link xlink:href=""></link>
+            Megoldás videó: <link xlink:href="https://www.youtube.com/watch?v=9KnMqrkj_kU">bogoMIPS-BHAX</link>
         </para>
         <para>
             Megoldás forrása: <link xlink:href=""></link>
         </para>
         <para>
-            Tanulságok, tapasztalatok, magyarázat... 
+            A program fő része a következő ciklus. 
+        </para>
+        <programlisting language="c"><![CDATA[
+		while (a!=0)
+		{ a<<=1;
+		  x++;
+
+    ]]>
+        </programlisting>
+        <para>
+            A ciklus feltétele, a kvöetkezőket addig csinálja amíg 0-át nem kap a memóriában. 
+            Ezt úgy éri el, hogy a szót 1-el mindig "arrébb tolja". Majd a számlálóhoz, (ami jelzi hogy hányszor kellett "arrébb tolnia" a szót), hozzáad egyet.
+            A ciklus véget is ér ha megkaptuk a szó hosszát. 
+            
         </para>
     </section>                     
 
@@ -217,7 +231,69 @@ false]]></screen>
             Megoldás forrása: <link xlink:href="https://github.com/HRikuto/prog1/tree/master/1.%20r%C3%A9sz/6.%20Hell%C3%B3%2C%20Google!">Github 2.6 megoldása</link>  
         </para>
         <para>
-            Tanulságok, tapasztalatok, magyarázat...
+            A Page-Rank feladata az internetes oldalak rangsorolása. A google volt keresőalgoritmusának alapja, innen indult ki minden.
+            Működése: Kezdetben minden oldalnak ad egy ugyanolyan értéket. Ha az egyik oldal linkeli a másikat, a másik értékéhez hozzáadódik az egyik értéke.
+            A képlet egyszerű, minnél többen hivatkoznak rá, annál előrébb kerül a rangsorban azaz "jobb lesz" és minél jobbak hivatkoznak rá, annál több pontja lesz.
+            Az alábbi algoritmus 4 Honlapot rangsorol.
+            
+        </para>
+        <programlisting language="c"><![CDATA[Pagerank
+	#include <math.h>
+        #include <stdio.h>
+
+        void kiir (double tomb[], int db)
+        {
+            for(short i = 0; i < db; ++i)
+            printf("%.2f \n",tomb[i]);
+        }
+            double tavolsag (double PR[], double PRv[], int n)
+        {
+            int i;
+            double osszeg = 0;
+   
+            for (i = 0; i < n; ++i)
+                osszeg += (PRv[i] - PR[i]) * (PRv[i] - PR[i]);
+   
+            return sqrt(osszeg);
+        }
+
+        int main()
+        {
+        double L[4][4] = {
+            {0.0, 0.0, 1.0 / 3.0, 0.0},
+            {1.0, 1.0 / 2.0, 1.0 / 3.0, 1.0},
+            {0.0, 1.0 / 2.0, 0.0, 0.0},
+            {0.0, 0.0, 1.0 / 3.0, 0.0}
+        };
+        double PR[4] = {0.0, 0.0, 0.0, 0.0};
+        double PRv[4] = {1.0 / 4.0, 1.0 / 4.0, 1.0 / 4.0, 1.0 / 4.0};
+        int i,j;
+         for(;;)
+            {
+            for(i = 0; i < 4; ++i)
+                {   
+                    PR[i] = 0.0;
+                        for(j = 0; j < 4; ++j)
+                        PR[i] += (L[i][j] * PRv[j]);
+                }
+      
+            if(tavolsag (PR, PRv, 4) < 0.00000001)
+            break;
+    
+            for(i = 0; i < 4; ++i)
+            PRv[i] = PR[i];
+            }
+        kiir (PR, 4);
+  return 0;
+}
+]]></programlisting>
+  
+        <para>
+            Egy mátrixban (vagyis c-ben több dimenziós tömbnek szoktuk hívni) vannak az adatok letárolva, hogy ki kire hivatkozik és hányszor. (L)
+            Az első for ciklusban elkezdjük a számolást, az ezen belüli for ciklusban összehasonlítjuk a mátrix felhasználásával minden oldal "értékét".
+            A for ciklus utáni if-be mengézzük hogy a különbség kisebb-e mint 0.00000001. 
+            Ha igen akkor kilépünk a végtelen ciklusból, ha nem akkor a PRv-t feltöltjük a PR elemeivel és számolunk tovább a végtelen ciklusban.
+            
         </para>
     </section>
 
@@ -231,6 +307,42 @@ false]]></screen>
         </para>
         <para>
             Megoldás forrása: <link xlink:href="https://gitlab.com/nbatfai/bhax/blob/master/attention_raising/Primek_R">https://gitlab.com/nbatfai/bhax/blob/master/attention_raising/Primek_R</link>
+        </para>
+        <programlisting language="c"><![CDATA[stp <- function(x){
+            primes = primes(x)
+            diff = primes[2:length(primes)]-primes[1:length(primes)-1]
+            idx = which(diff==2)
+            t1primes = primes[idx]
+            t2primes = primes[idx]+2
+            rt1plust2 = 1/t1primes+1/t2primes
+            return(sum(rt1plust2))
+}
+    ]]>
+        </programlisting>
+        <para>
+            1. sor kiszámolja a prímeket n-ig (jelen esetben inkább x-ig, de matematkailag általnosabb az n).
+            2. sor az egymást követő prímek különbségét számolja ki. (mintha az egyik vektort elcsúsztatnánk a másikon) pl:             
+            (Az alsó kötőjelek csak a sorok könyebb megértése miatt vannak.) 
+        </para> 
+        <para>       
+            3_5_7_11_13
+        </para>
+        <para>   
+            2_3_5__7_11 (-)
+        </para>
+        <para>
+            1_2_2__4__2
+        </para>
+        
+        <para>
+            3. sor megnézi hogy melyek az ikeprímek. Ahol az előző kivonás különbsége 2, ott vannak az ikerprímek.
+            4. sor kiveszi az idx alapján az ikerpríemek első tagját. (pl.: a különbségvektorban a 2. helyen lett 2 a különbség --> az eredeti vektor második elemét veszi ki.)
+            5. sor ugyanazt csinálja mint az előző, cska másik változóba tárolja el és hozzáad az elemekhez kettőt.
+            6. sor reciprokokat képez az előző 2 változó értékeiből és összeadja azokat. 
+            Végül összeadja és visszaadja az rt1plust2-ben lévő értékeket. 
+        </para>
+        <para>
+            Ezután kirajzoltatjuk az értékeket. A grafikonon látszik ahogy egy felső értékhez/határhoz konvergálnak az összegek. 
         </para>
     </section>
     
@@ -246,7 +358,66 @@ false]]></screen>
             Megoldás forrása: <link xlink:href="https://gitlab.com/nbatfai/bhax/tree/master/attention_raising/MontyHall_R">https://gitlab.com/nbatfai/bhax/tree/master/attention_raising/MontyHall_R</link>
         </para>
         <para>
-            Tanulságok, tapasztalatok, magyarázat...
+            Története:
+            1991-ben a Parade magazin „Kérdezze Marilynt!" című rovatában hozták először a nagy nyilvánosság elé a problémát
+            Mi a követkeőz kérdésre a helyes válasz? Ön játékos egy televíziós műsorban, és három ajtó közül kell választania.
+            Az egyik mögött rejlik a főnyeremény, egy autó, a másik kettő mögött pedig nincs semmi. Ön a második ajtót választja. Ekkor a műsorvezető kinyitja a másik két ajtó közül az egyiket, mondjuk a harmadikat, ami üres. 
+            Majd felteszi a kérdést, hogy szeretne-e változtatni és esetleg  másik ajtót választani?
+            A helyes válasz rá, igen, mert ezzel megduplázza a nyerési esélyeit. De hogyan, és miért? 
+            Ezt nem túl egyszerű elmagyarázni (mivel matekmatikai bizonyítások ellenére és kételkednek), így a forráskód és egy példa alapján fogom bemutatni.
+            
+             
+        </para>
+        <programlisting language="c"><![CDATA[
+kiserletek_szama=10000000
+kiserlet = sample(1:3, kiserletek_szama, replace=T)
+jatekos = sample(1:3, kiserletek_szama, replace=T)
+musorvezeto=vector(length = kiserletek_szama)
+
+for (i in 1:kiserletek_szama) {
+
+    if(kiserlet[i]==jatekos[i]){
+    
+        mibol=setdiff(c(1,2,3), kiserlet[i])
+    
+    }else{
+    
+        mibol=setdiff(c(1,2,3), c(kiserlet[i], jatekos[i]))
+    
+    }
+
+    musorvezeto[i] = mibol[sample(1:length(mibol),1)]
+
+}
+
+nemvaltoztatesnyer= which(kiserlet==jatekos)
+valtoztat=vector(length = kiserletek_szama)
+
+for (i in 1:kiserletek_szama) {
+
+    holvalt = setdiff(c(1,2,3), c(musorvezeto[i], jatekos[i]))
+    valtoztat[i] = holvalt[sample(1:length(holvalt),1)]
+    
+}
+
+valtoztatesnyer = which(kiserlet==valtoztat)
+
+
+sprintf("Kiserletek szama: %i", kiserletek_szama)
+length(nemvaltoztatesnyer)
+length(valtoztatesnyer)
+length(nemvaltoztatesnyer)/length(valtoztatesnyer)
+length(nemvaltoztatesnyer)+length(valtoztatesnyer)
+
+}
+    ]]>
+        </programlisting>
+        <para>
+            A program véletlen eseteket generál. Az első sorban meghatároztuk a kísérletek számát.
+            A "jatekos" vektorban megadjuk mit választ a játékos. (A vektor elemeinek száma ugyanannyi mint a kísérletek száma)
+            Majd egy for ciklussal végignézzük a kísérleteket. Ha eltalálta a játékos kap pontot, ha nem akkor a műsorvezető.
+            Majd kiértékeljük hányszor nyert. Ennek alapján kiértékeljük hogy ha változtatott volna, akkor hányszor nyert volna.
+            Majd a megszámolt értékeket kiíratjuk. A nyerési esély 2/3 ha változtatunk, amíg 1/3 ha nem változtatunk.
         </para>
     </section>
 
