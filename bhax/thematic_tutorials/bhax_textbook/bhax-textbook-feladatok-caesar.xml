@@ -14,11 +14,80 @@
             Megoldás videó:
         </para>
         <para>
-            Megoldás forrása:                
+            Megoldás forrása: <link xlink:href="https://github.com/HRikuto/prog1/tree/master/4.%20r%C3%A9sz/4.1">Github 4.1 megoldása</link>
+
+                          
         </para>
         <para>
-            Tanulságok, tapasztalatok, magyarázat...
-        </para>            
+            A mátrixok m darab sorral és n darab oszloppal rendelkező táblázatok. Akkor beszélünk háromszögmátrixról, ha a négyzetes mátrix (sorok és oszlopok száma megegyezik) főátlója alatt vagy felett csupa 0 elem található.
+            Az alsó háromszögmátrix elemeit sorfolytonosan bejárva el tudjuk helyezni egy tömbben, az így kapott elemek száma n(n+1)/2 lesz.
+            Jelen esetben 3 sorral (a programban nr változó tárolja) fogunk dolgozni, tehát az elemek száma 6.
+            A <function>malloc</function> függvény képes lefoglalni a dinamikus területen egy, a paramétereként kapott méretű területet.
+            Ezt követően vagy a lefoglalt terület kezdőcímét, vagy NULL-t ad vissza (hiba esetén).
+            A man 3 malloc parancs terminálba való beírásával megkaphatjuk a függvény pontos szintaktikai leírását.
+            Egyetlen paramétere (size_t size) azt mondja meg, hogy hány bájtot szeretnénk a memóriában lefoglalni.
+            A <function>free</function> függvény felszabadítja a lefoglalt területet.
+            Manuáljából (man 3 free) megtudhatjuk, hogy bemeneti paramétere a memóriát azonosító pointer (ptr).
+
+        </para>
+         <programlisting><![CDATA[
+#include <stdio.h>
+#include <stdlib.h>
+
+int
+main ()
+{
+    int nr = 3;
+    double **tm;
+    
+    printf("%p\n", &tm);
+    
+    if ((tm = (double **) malloc (nr * sizeof (double *))) == NULL)
+    {
+        return -1;
+    }
+
+    printf("%p\n", tm);
+    
+    for (int i = 0; i < nr; ++i)
+    {
+        if ((tm[i] = (double *) malloc ((i + 1) * sizeof (double))) == NULL)
+        {
+            return -1;
+        }
+
+    }
+
+    printf("%p\n", tm[0]);    
+    
+    for (int i = 0; i < nr; ++i)
+        for (int j = 0; j < i + 1; ++j)
+            tm[i][j] = i * (i + 1) / 2 + j;
+
+    for (int i = 0; i < nr; ++i)
+    {
+        for (int j = 0; j < i + 1; ++j)
+            printf ("%f, ", tm[i][j]);
+        printf ("\n");
+    }
+
+
+    for (int i = 0; i < nr; ++i)
+    {
+        for (int j = 0; j < i + 1; ++j)
+            printf ("%f, ", tm[i][j]);
+        printf ("\n");
+    }
+
+    for (int i = 0; i < nr; ++i)
+        free (tm[i]);
+
+    free (tm);
+
+    return 0;
+}]]>
+            </programlisting>
+            
     </section>        
     <section>
         <title>C EXOR titkosító</title>
@@ -29,11 +98,28 @@
             Megoldás videó:
         </para>
         <para>
-            Megoldás forrása:                
+            Megoldás forrása: <link xlink:href="https://github.com/HRikuto/prog1/tree/master/4.%20r%C3%A9sz/4.2">Github 4.2 megoldása</link>               
         </para>
         <para>
-            Tanulságok, tapasztalatok, magyarázat...
-        </para>            
+            Az EXOR titkosító lényegében a logikai vagyra, azaz a XOR műveletre utal, mely bitenként összeshasonlítja a két operandust, és mindig 1-et ad vissza, kivéve, amikor
+            az összehasonlított 2 Bit megegyezik, mert akkor nullát. Tehát 2 operandusra van szükségünk, ez jelen esetben a titkosítandó bemenet, és a titkosításhoz használt kulcs.
+            Jó esetben a kettő mérete megyegyezik, így garantálható, hogy szinte feltörhetetlen kódot kapunk, mivel túl sokáig tart annak megfejtése. A mi pédánkban természetesen
+            nem lesz ilyen hosszú a kulcs, mivel ki is szeretnénk próbálni a programot. Viszont ha a kulcs rövidebb, mint a titkosítandó szöveg, akkor a kulcs elkezd ismétlődni, ami
+            így egy biztonsági kockázat.
+
+        </para> 
+        <para><programlisting language="c">
+                #define MAX_KULCS 100
+                #define BUFFER_MERET 256
+            </programlisting>
+            A kulcs méret és a buffer méretének maximumát konstansban tároljuk el, ezek nem módosíthatóak. A szintaxisa is másabb, mint egy változó definiálásánal, itt
+            lényegében azt adjuk meg, hogy mivel helyettesítse a megadott nevet a program a forrásban. 
+            Nem csak számokat használhatunk konstansként, hanme stringeket is. Érdekessége, hogy nem program futtatásakor
+            történik meg a behelyettesítés, hanem a már a fordítás alatt, tehát a gépi kód már behelyettesített értékeket tartalmazza.
+           </para>  
+                    
+        
+
     </section>        
     <section>
         <title>Java EXOR titkosító</title>
@@ -59,11 +145,56 @@
             Megoldás videó:
         </para>
         <para>
-            Megoldás forrása:                
+            Megoldás forrása:   <link xlink:href="https://github.com/HRikuto/prog1/tree/master/4.%20r%C3%A9sz/4.4">Github 4.4 megoldása</link>             
         </para>
         <para>
-            Tanulságok, tapasztalatok, magyarázat...
-        </para>            
+            Tanulságok, tapasztalatok, magyarázat:
+            Mivel ez a feladat a korábban létrehozott EXOR-titkosítónkra épül, ezért dolgozhatunk ugyanazokkal a szövegfájlokkal (<filename>tiszta.txt</filename> fájlban az eredeti szöveg és <filename>titkos.szoveg</filename> állományban a titkosító által generált szöveg).
+            Az előző feladatban egy 8 számjegyű kulccsal dolgoztunk (56789012), ennek megfelelően a <filename>t.c</filename> kódja is ehhez alkalmazkodik (#define KULCS_MERET 8).
+            A <function>tiszta_lehet</function> függvényben feltételezzük, hogy a tiszta szöveg valószínűleg tartalmazza a leggyakoribb magyar szavakat pl. hogy, nem, az, ha.
+            Az átlagos szóhossz definiálásával csökkentjük a potenciális töréseket, ennek ellenére valószínűleg nem csak a helyes kulcsot (és tiszta szöveget) fogjuk visszakapni.
+
+        </para>
+        <para>
+        <programlisting>
+                #define MAX_TITKOS 4096
+                #define OLVASAS_BUFFER 256
+                #define KULCS_MERET 8
+            </programlisting>
+            Ezúttal is meghatározunk bizonyos konstansokat, ebből a kulcs_meret érdekes, mert feltételezzük, hogy a kulcs 8 elemből áll, már
+            itt látni, hogy ez nem lenne túl hatékony a való életben.
+            <programlisting><![CDATA[
+                double
+                atlagos_szohossz (const char *titkos, int titkos_meret)
+                {
+                    int sz = 0;
+                    for (int i = 0; i < titkos_meret; ++i)
+                        if (titkos[i] == ' ')
+                            ++sz;
+
+                    return (double) titkos_meret / sz;
+                }]]>
+            </programlisting>
+            Az <function>atlagos_szohossz</function> függvénnyel kiszámítjuk a bemenet átlagos szóhosszát, argumentumként átadjuk egy tömböt, és annak a méretét. Majd egy <function>for</function>
+            ciklussal bejárjuk, és minden elem után hozzáadunk 1-et az <function>sz</function> változóhoz. Visszatérési értékként pedig a tömb méretének és a számlálónka a hányadosát
+            adjuk.
+            <programlisting language="c"><![CDATA[
+                int
+                tiszta_lehet (const char *titkos, int titkos_meret)
+                {
+                    // a tiszta szoveg valszeg tartalmazza a gyakori magyar szavakat
+                    // illetve az átlagos szóhossz vizsgálatával csökkentjük a
+                    // potenciális töréseket
+
+                    double szohossz = atlagos_szohossz (titkos, titkos_meret);
+
+                    return szohossz > 6.0 && szohossz < 9.0
+                        && strcasestr (titkos, "hogy") && strcasestr (titkos, "nem")
+                        && strcasestr (titkos, "az") && strcasestr (titkos, "ha");
+
+                }]]>
+</programlisting>
+</para>            
     </section>        
     <section>
         <title>Neurális OR, AND és EXOR kapu</title>
@@ -74,11 +205,38 @@
             Megoldás videó: <link xlink:href="https://youtu.be/Koyw6IH5ScQ">https://youtu.be/Koyw6IH5ScQ</link>
         </para>
         <para>
-            Megoldás forrása: <link xlink:href="https://gitlab.com/nbatfai/bhax/tree/master/attention_raising/NN_R">https://gitlab.com/nbatfai/bhax/tree/master/attention_raising/NN_R</link>               
+            Megoldás forrása: <link xlink:href="https://github.com/HRikuto/prog1/tree/master/4.%20r%C3%A9sz/4.5">Github 4.5 megoldása</link>               
         </para>
         <para>
-            Tanulságok, tapasztalatok, magyarázat...
+            
+            Az R nyelv neurális hálózatot fogunk létrehozni, mely képes "tanulni", és megközelíteni az átalunk megadott
+            megfelelő értékeket. A hálózat a nevét a neuronról kapta, mely agyunk egy sejtje. Feladata az elektromos 
+            jelek összegyűjtése, feldolgozás és szétterjesztése. Az a feltételezés, hogy az agyunk információfeldolgozási
+            képességét ezen sejtek  hálózata adja. Éppen emiatt a mesterséges intelligencia kutatások során ennek a szimulálást
+            tűzték ki célul.
+           
+        </para>
+        <para>
+            Az első részben a logikai
+            vagyot tanítjuk meg a neurális hálózatnak, mely 1-et ad vissza, kivéve, ha mind a két
+            operandusa 0, mert akkor 0-át.
+            <programlisting><![CDATA[
+library(neuralnet)
+
+a1    <- c(0,1,0,1)
+a2    <- c(0,0,1,1)
+OR    <- c(0,1,1,1)
+
+or.data <- data.frame(a1, a2, OR)
+
+nn.or <- neuralnet(OR~a1+a2, or.data, hidden=0, linear.output=FALSE, stepmax = 1e+07, threshold = 0.000001)
+
+plot(nn.or)
+
+compute(nn.or, or.data[,1:2])]]>
+</programlisting>
         </para>            
+        
     </section>        
     <section>
         <title>Hiba-visszaterjesztéses perceptron</title>
@@ -89,10 +247,31 @@
             Megoldás videó:
         </para>
         <para>
-            Megoldás forrása:                
+            Megoldás forrása:  <link xlink:href="https://github.com/HRikuto/prog1/tree/master/4.%20r%C3%A9sz/4.6">Github 4.6 megoldása</link>              
         </para>
         <para>
-            Tanulságok, tapasztalatok, magyarázat...
+            Ebben a feladatban folytatjuk a elmélkedést a neuron hálózatokra, ezen belül
+            perceptronokról lesz szó. Ez egy algoritmus amely a számítógépnek "megtanítja"
+            a bináris osztályozást. Ide is berakhatnám az előző fejezetben lévő képet
+            a neuronról, ami egy bemenetet kap, és egy bizonyos pontot elérve "tüzel", ad
+            egy kimenetet. Itt is hasonló dologról van szó:
+        </para>
+            <para>
+            Tehát van egy halmaz amiben vannak piros és fekete pontok, a fekete pontok a vonal
+            felett vannak, a pirosak pedig alatta. Adok a perceptronnak bemenetként egyet-egyet
+            mind a kettőből, és a képes lesz megmondani a többite, hogy a vonal felett van-e,
+            vagy alatta. Ezért nevezzük bináris osztáylozásnak, mert van a vonal felettiek osztálya
+            és az alattiaké, ez a kapcsolat könnyen reprezentálható eggyel és nullával.
+        </para>
+        <para>
+            Akkor lássuk magát a programot. Most C++-ban fogunk dolgozni, melyről tettem már
+            említést a Java-s feladatban, szóval annyit már tudsz, hogy ez is egy
+            objektum-orientált nyelv, szóval a class-okat képtelenség lesz elkerülni. 3 fájlre lesz
+            szükség, abból az egyikkel, <filename>mandelpng.cpp</filename>-vel most nem
+            foglalkoznék, hiszen a következő fejezetben pont erről lesz szó. Egyelőre legyen
+            elég annyi, hogy ezzel tudunk készíteni egy képet, ami a Mandelbrot halmazt
+            ábrázolja.
+
         </para>            
     </section>        
         
